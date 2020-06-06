@@ -11,3 +11,12 @@ aaaaaaaaaaaaaa
 - list3
 
  # aqwsedrftgyhuiolp;@:[]
+
+ (´・ω・`)
+ ('A`)
+ (A` )
+ (`  )
+ (   )
+ (  ')
+ ( 'A)
+ ('A`)b
