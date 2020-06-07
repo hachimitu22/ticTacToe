@@ -8,6 +8,7 @@
   - [インフォメーション](./information.md)
   - [もう一度ボタン](./continueButton.md)
   - 機能
+    - [初期化](./feature_initialize.md)
     - [マス目クリック](./feature_clickCell.md)
     - [もう一度ボタン押下](./feature_submitContinueButton.md)
 - テスト項目
