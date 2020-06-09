@@ -37,13 +37,20 @@ function initialize() {
 // セルクリック
 function clickCell(a) {
   const p = document.querySelector('.info p');
-  count++
+  const check = a.target.textContent === "";
+  if (check) {
+    count++
+  }
   if (count%2 === 0) {
-    a.target.textContent = '×';
-    p.textContent = '○の番です';
+    if (check) {
+      a.target.textContent = '×';
+      p.textContent = '○の番です';
+    } 
   } else {
-    a.target.textContent = '○';
-    p.textContent = '×の番です';
+    if (check) {
+      a.target.textContent = '○';
+      p.textContent = '×の番です';
+    } 
   }
 }
 // もう一度ボタン押下
@@ -57,4 +64,3 @@ cells.forEach(function (cell) {
   cell.addEventListener('click', clickCell);
 });
 document.querySelector('button').onclick = submitContinueButton;
-
