@@ -55,7 +55,17 @@ function clickCell(a) {
 }
 // もう一度ボタン押下
 function submitContinueButton() {
-  console.log('submitContinueButton');
+  const cells = document.querySelectorAll('.cell');
+  const button = document.querySelector('button');
+  // 処理多ッ
+  cells.forEach(cell => {
+    if(Boolean(cell.textContent) === false ) {
+      button.disabled = true;
+    } else {
+      cell.textContent = "";
+    }
+    button.disabled = false;
+  });
 }
 
 window.onload = initialize;
