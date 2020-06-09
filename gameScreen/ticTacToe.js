@@ -29,14 +29,15 @@
 // })
 
 var count = 0;
-
+var button = document.querySelector('button');
+var p = document.querySelector('.info p');
 // 初期化
 function initialize() {
   console.log('initialize');
 }
 // セルクリック
 function clickCell(a) {
-  const p = document.querySelector('.info p');
+  button.disabled = false;
   const check = a.target.textContent === "";
   if (check) {
     count++
@@ -56,15 +57,13 @@ function clickCell(a) {
 // もう一度ボタン押下
 function submitContinueButton() {
   const cells = document.querySelectorAll('.cell');
-  const button = document.querySelector('button');
-  // 処理多ッ
   cells.forEach(cell => {
-    if(Boolean(cell.textContent) === false ) {
-      button.disabled = true;
-    } else {
+    if(Boolean(cell.textContent) === true ) {
       cell.textContent = "";
+      button.disabled = true;
+      count = 0;
+      p.textContent = "○の番です";
     }
-    button.disabled = false;
   });
 }
 
