@@ -35,20 +35,23 @@ var p = document.querySelector('.info p');
 // 初期化
 function initialize() {
   cells.forEach(cell => {
-    if(Boolean(cell.textContent) === true ) {
       cell.textContent = "";
       count = 0;
       p.textContent = "○の番です";
-    }
   });
 }
 // セルクリック
 function clickCell(a) {
-  button.disabled = false;
   const check = a.target.textContent === "";
+
   if (check) {
     count++
   }
+
+  if (p.textContent === '○の勝利です！' || p.textContent === '×の勝利です！'|| p.textContent === '引き分けです') {
+    return;
+  } 
+
   if (count%2 === 0) {
     if (check) {
       a.target.textContent = '×';
@@ -61,7 +64,7 @@ function clickCell(a) {
       || resultjudge[6][0].textContent === '×' && resultjudge[6][1].textContent === '×' && resultjudge[6][2].textContent === '×' 
       || resultjudge[7][0].textContent === '×' && resultjudge[7][1].textContent === '×' && resultjudge[7][2].textContent === '×') {
         p.textContent = '×の勝利です！';
-        
+        button.disabled = false;
       } else {
         p.textContent = '○の番です';
       }
@@ -78,22 +81,24 @@ function clickCell(a) {
       || resultjudge[6][0].textContent === '○' && resultjudge[6][1].textContent === '○' && resultjudge[6][2].textContent === '○' 
       || resultjudge[7][0].textContent === '○' && resultjudge[7][1].textContent === '○' && resultjudge[7][2].textContent === '○') {
         p.textContent ='○の勝利です！';
-        
+        button.disabled = false;
       } else {
         p.textContent = '×の番です';
       }
     }
   }
+  if (count === cells.length) {
+    p.textContent = '引き分けです';
+    button.disabled = false;
+  }
 }
 // もう一度ボタン押下
 function submitContinueButton() {
   cells.forEach(cell => {
-    if(Boolean(cell.textContent) === true ) {
       cell.textContent = "";
       count = 0;
       p.textContent = "○の番です";
       button.disabled = true;
-    }
   });
 }
 
