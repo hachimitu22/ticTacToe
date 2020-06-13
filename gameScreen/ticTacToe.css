@@ -1,0 +1,64 @@
+* {
+  box-sizing: border-box;
+}
+
+header {
+  margin-bottom: 200px;
+}
+
+.top-line {
+  border-top: 2px solid black; 
+}
+
+.left-line {
+  border-left: 2px solid black;
+}
+
+.game-placement {
+  width: 450px;
+  height: 450px;
+  margin: 0 auto;
+}
+
+.game-screen {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cell {
+  width: 150px;
+  height: 150px;
+  background: rgb(116, 247, 76);
+  cursor: pointer;
+  display: block;
+  border-bottom: 2px solid black;
+  border-right: 2px solid black;
+  border-collapse: collapse;
+  text-align: center;
+  line-height: 150px;
+  font-size: 60px;
+}
+
+.info-line {
+  display: flex;
+  width: 700px;
+  margin: 0 auto;
+  justify-content: space-between;
+  margin-top: 60px;
+  
+}
+
+.info {
+  font-size: 26px;
+}
+
+.continueButton {
+  align-self: center;
+}
+
+.continueButton button {
+  font-size: 24px;
+  padding: 0 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
