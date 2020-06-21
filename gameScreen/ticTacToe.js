@@ -31,6 +31,7 @@
 var count = 0;
 var button = document.querySelector('button');
 var p = document.querySelector('.info p');
+var playerMark = '○';
 
 // 初期化
 function initialize() {
@@ -42,51 +43,18 @@ function initialize() {
 }
 // セルクリック
 function clickCell(a) {
-  const check = a.target.textContent === "";
-
-  if (check) {
-    count++
+  if (this.textContent !== "") {
+    return;
   }
-
   if (p.textContent === '○の勝利です！' || p.textContent === '×の勝利です！'|| p.textContent === '引き分けです') {
     return;
-  } 
-
-  if (count%2 === 0) {
-    if (check) {
-      a.target.textContent = '×';
-      if (resultjudge[0][0].textContent === '×' && resultjudge[0][1].textContent === '×' && resultjudge[0][2].textContent === '×' 
-      || resultjudge[1][0].textContent === '×' && resultjudge[1][1].textContent === '×' && resultjudge[1][2].textContent === '×' 
-      || resultjudge[2][0].textContent === '×' && resultjudge[2][1].textContent === '×' && resultjudge[2][2].textContent === '×' 
-      || resultjudge[3][0].textContent === '×' && resultjudge[3][1].textContent === '×' && resultjudge[3][2].textContent === '×' 
-      || resultjudge[4][0].textContent === '×' && resultjudge[4][1].textContent === '×' && resultjudge[4][2].textContent === '×' 
-      || resultjudge[5][0].textContent === '×' && resultjudge[5][1].textContent === '×' && resultjudge[5][2].textContent === '×' 
-      || resultjudge[6][0].textContent === '×' && resultjudge[6][1].textContent === '×' && resultjudge[6][2].textContent === '×' 
-      || resultjudge[7][0].textContent === '×' && resultjudge[7][1].textContent === '×' && resultjudge[7][2].textContent === '×') {
-        p.textContent = '×の勝利です！';
-        button.disabled = false;
-      } else {
-        p.textContent = '○の番です';
-      }
-    }
-  } else {
-    if (check) {
-      a.target.textContent = '○';
-      if (resultjudge[0][0].textContent === '○' && resultjudge[0][1].textContent === '○' && resultjudge[0][2].textContent === '○' 
-      || resultjudge[1][0].textContent === '○' && resultjudge[1][1].textContent === '○' && resultjudge[1][2].textContent === '○' 
-      || resultjudge[2][0].textContent === '○' && resultjudge[2][1].textContent === '○' && resultjudge[2][2].textContent === '○' 
-      || resultjudge[3][0].textContent === '○' && resultjudge[3][1].textContent === '○' && resultjudge[3][2].textContent === '○' 
-      || resultjudge[4][0].textContent === '○' && resultjudge[4][1].textContent === '○' && resultjudge[4][2].textContent === '○' 
-      || resultjudge[5][0].textContent === '○' && resultjudge[5][1].textContent === '○' && resultjudge[5][2].textContent === '○' 
-      || resultjudge[6][0].textContent === '○' && resultjudge[6][1].textContent === '○' && resultjudge[6][2].textContent === '○' 
-      || resultjudge[7][0].textContent === '○' && resultjudge[7][1].textContent === '○' && resultjudge[7][2].textContent === '○') {
-        p.textContent ='○の勝利です！';
-        button.disabled = false;
-      } else {
-        p.textContent = '×の番です';
-      }
-    }
   }
+  
+  count++
+
+  aaa(playerMark,a);
+  playerMark = playerMark === '×' ? '○' : '×';
+
   if (count === cells.length) {
     p.textContent = '引き分けです';
     button.disabled = false;
@@ -96,8 +64,9 @@ function clickCell(a) {
 function submitContinueButton() {
   cells.forEach(cell => {
       cell.textContent = "";
+      
       count = 0;
-      p.textContent = "○の番です";
+      p.textContent = `${playerMark}の番です`;
       button.disabled = true;
   });
 }
@@ -126,3 +95,35 @@ var diag1 = filterById(cellsArray, ['cell1', 'cell5', 'cell9']);
 var diag2 = filterById(cellsArray, ['cell3', 'cell5', 'cell7']);
 
 var resultjudge = [side1, side2, side3, ver1, ver2, ver3, diag1, diag2];
+
+function result(mark) {
+  return resultjudge[0][0].textContent === mark && resultjudge[0][1].textContent === mark && resultjudge[0][2].textContent === mark
+  || resultjudge[1][0].textContent === mark && resultjudge[1][1].textContent === mark && resultjudge[1][2].textContent === mark
+  || resultjudge[2][0].textContent === mark && resultjudge[2][1].textContent === mark && resultjudge[2][2].textContent === mark
+  || resultjudge[3][0].textContent === mark && resultjudge[3][1].textContent === mark && resultjudge[3][2].textContent === mark
+  || resultjudge[4][0].textContent === mark && resultjudge[4][1].textContent === mark && resultjudge[4][2].textContent === mark
+  || resultjudge[5][0].textContent === mark && resultjudge[5][1].textContent === mark && resultjudge[5][2].textContent === mark
+  || resultjudge[6][0].textContent === mark && resultjudge[6][1].textContent === mark && resultjudge[6][2].textContent === mark
+  || resultjudge[7][0].textContent === mark && resultjudge[7][1].textContent === mark && resultjudge[7][2].textContent === mark;
+}
+
+function info(value) {
+  if (value %2 === 0){
+    p.textContent = '○の番です';
+  } else {
+    p.textContent = '×の番です';
+  }
+}
+
+function resultInfo(mark) {
+  button.disabled = false;
+  p.textContent =`${mark}の勝利です！`;
+}
+function aaa(mark,e) {
+  e.target.textContent = playerMark;
+  if (result(mark)) {
+    resultInfo(mark);
+    } else {
+    info(count);
+    }
+}

@@ -93,3 +93,10 @@ cells.forEach(function (cell) {
   cell.addEventListener('click', clickCell);
 });
 document.querySelector('button').onclick = submitContinueButton;
+
+class tictactoe {
+  constructor() {
+    this.player = playerMark;
+    
+  }
+}
