@@ -1,102 +1,163 @@
-var playerMark = '○';   // 現在のプレイヤー記号
+class TicTacToe {
+  constructor(domCells, hitLines) {
+    this.player = '○';
+    this.domCells = domCells;
+    this.hitLines = hitLines;
+    this.winner = this.player;
+    this._board = new Board(domCells);
+  }
+  initialize(){
+    this.domCells.forEach(dom => {
+      dom.textContent = "";
+    });
+    this.player = '○';
+    information.changeMessage(`${this.player}の番です`);
+    document.querySelector('button').disabled = true;
+  }
+  put(dom) {
+    this._board.put(dom, this.player);
+    this._changePlayer();
+  }
+  isGameOver() {
+    return _gameOver();
+  }
+  existWinner() {
+    return this._isAnyHitLine();
+  }
+  isDraw() {
+    return this._board.isFill();
+  };
+  _gameOver() {
+    return this.isDraw() || this._isAnyHitLine();
+  };
+  _changePlayer() {
+    this.player = this.player === '○'?'×':'○';
+  };
+  _isAnyHitLine() {
+    return this._board.isSame(this.domCells, this.player);
+  };
+}
+class Board {
+  constructor(domCells) {
+    this._cells = domCells;
+  }
+  clear() {
+    this._cells.forEach(cell => {
+      cell.textContent = '';
+    });
+  };
+  put(dom, mark) {
+    dom.textContent = mark;
+    return dom.textContent === mark;
+  };
+  isFill() {
+    return this._cells.every(cell => {
+      return cell.textContent !== '';
+    });
+  }
+  isSame(indexCells, mark) {
+    return  hitLines.some(line => {
+      return line.every(index => {
+        return indexCells[index].textContent === mark;
+      });
+    });
+  }
+}
+class Cell {
+  constructor(dom) {
+    this._dom = dom;
+  }
+  clear() {
+    this._dom.textContent = '';
+  }
+  isSameDom(dom) {
+    return dom === this._dom; 
+  };
+  isFill() {
+    return this._dom !== '';
+  }
+  isSameMark(mark) {
+    return this._dom.textContent ===  mark;
+  }
+  putMark(mark) {
+    this._dom.textContent = mark;
+  }
+}
 
+class Information {
+  constructor(dom) {
+    this.dom = dom;
+  }
+  changeMessage(message) {
+    this.dom.textContent = message;
+  }
+}
+
+class ContinueButton {
+  constructor(dom) {
+  this.btn = dom;
+  }
+  activate() {
+    this.btn.disabled = false;
+  }
+  deactivate() {
+    this.btn.disabled = true;
+  }
+}
+
+const hitLines = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+
+  [0, 4, 8],
+  [2, 4, 6],
+];
+const ticTacToe = new TicTacToe(Array.from(document.querySelectorAll('.cell')), hitLines); 
+const information = new Information(document.querySelector('.info').querySelector('p'));
+const continueButton = new ContinueButton(document.querySelector('button'));
+
+
+console.log(continueButton);
 // 初期化
 function initialize() {
-  var cells = getCells();
-  cells.forEach(function (cell) {
-    cell.innerHTML = '';
-  });
-
-  playerMark = '○';
-  setInformation(`${playerMark}の番です`);
-  document.querySelector('button').disabled = true;
+  ticTacToe.initialize();
+  information.changeMessage(`${ticTacToe.player}の番です`);
+  continueButton.deactivate();
 }
 // セルクリック
-function clickCell() {
-  // セルに既に記号が設置してあるか？
-  if (this.innerHTML !== "") {
-    return;
-  }
-  // 勝敗が決まってるか？
-  if (isHitLine(playerMark) || isFillCells()) {
+function clickCell(e) {
+  if (ticTacToe.isGameOver()) {
     return;
   }
 
-  // プレイヤーの記号をセルに設置
-  this.textContent = playerMark;
+  ticTacToe.put(e.target);
 
-  if (isHitLine(playerMark)) {
-    // ラインが揃った？
-    // インフォメーションに勝者プレイヤーを表示する
-    setInformation(`${playerMark}の勝利です`);
-    // もう一度ボタンを有効化する
-    document.querySelector('button').disabled = false;
-  } else if (isFillCells()) {
-    // 全セルに記号が設置された？
-    setInformation(`引き分けです`);
-    // もう一度ボタンを有効化する
-    document.querySelector('button').disabled = false;
+  if (ticTacToe.existWinner()) {
+    information.changeMessage(`${ticTacToe.winner}の勝利です`);
+    continueButton.activate();
+  } else if (ticTacToe.isDraw()) {
+    information.changeMessage(`引き分けです`);
+    continueButton.activate();
   } else {
-    //
-    playerMark = playerMark === '○' ? '×' : '○';
-    setInformation(`${playerMark}の番です`);
+    information.changeMessage(`${ticTacToe.player}の番です`);
   }
 }
-
 // もう一度ボタン押下
 function submitContinueButton() {
   initialize();
 }
 
-// インフォメーションにメッセージを設定する
-function setInformation(message) {
-  document.querySelector('.info').querySelector('p').textContent = message;
-}
-
-// セル一覧を取得
-function getCells() {
-  var cells = document.querySelectorAll('.cell');
-  return Array.from(cells);
-}
-
-// いずれかのラインが揃っているか？
-function isHitLine(mark) {
-  var cells = getCells();
-  var lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-
-  return lines.some(line => {
-    return line.every(index => cells[index].innerHTML === mark);
-  });
-}
-
-// 全マスが埋まっているか？
-function isFillCells() {
-  var cells = getCells();
-  return cells.every(cell => cell.innerHTML !== '');
-}
-
 // イベント設定
 window.onload = initialize;
-var cells = getCells();
+var cells = document.querySelectorAll('.cell');
 cells.forEach(function (cell) {
   cell.addEventListener('click', clickCell);
 });
 document.querySelector('button').onclick = submitContinueButton;
 
-class tictactoe {
-  constructor() {
-    this.player = playerMark;
-    
-  }
-}
+console.log(ticTacToe);
