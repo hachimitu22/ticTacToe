@@ -19,7 +19,7 @@ class TicTacToe {
     this._changePlayer();
   }
   isGameOver() {
-    return _gameOver();
+    return this._gameOver();
   }
   existWinner() {
     return this._isAnyHitLine();
@@ -39,20 +39,27 @@ class TicTacToe {
 }
 class Board {
   constructor(domCells) {
-    this._cells = domCells;
+        this.domCells = domCells;
+        this._cells = domCells.map(dom => { //Cellインスタンスの配列が出来てる
+        return new Cell(dom);
+      });
   }
   clear() {
-    this._cells.forEach(cell => {
-      cell.textContent = '';
+    this.domCells.clear();
+  };
+  //============================================作業中======================
+  put(dom, mark) {
+    this._cells.some(cell=> {
+      cell.putMark(mark);
+    });
+    this._cells.some(cell => {
+      cell.isSameDom(dom);
     });
   };
-  put(dom, mark) {
-    dom.textContent = mark;
-    return dom.textContent === mark;
-  };
+  //===========================================================================
   isFill() {
     return this._cells.every(cell => {
-      return cell.textContent !== '';
+      return cell.isFill();
     });
   }
   isSame(indexCells, mark) {
@@ -121,8 +128,6 @@ const ticTacToe = new TicTacToe(Array.from(document.querySelectorAll('.cell')), 
 const information = new Information(document.querySelector('.info').querySelector('p'));
 const continueButton = new ContinueButton(document.querySelector('button'));
 
-
-console.log(continueButton);
 // 初期化
 function initialize() {
   ticTacToe.initialize();
@@ -131,9 +136,9 @@ function initialize() {
 }
 // セルクリック
 function clickCell(e) {
-  if (ticTacToe.isGameOver()) {
-    return;
-  }
+  // if (ticTacToe.isGameOver()) {
+  //   return;
+  // }
 
   ticTacToe.put(e.target);
 
@@ -160,4 +165,4 @@ cells.forEach(function (cell) {
 });
 document.querySelector('button').onclick = submitContinueButton;
 
-console.log(ticTacToe);
+console.log(ticTacToe._board._cells[0]);
