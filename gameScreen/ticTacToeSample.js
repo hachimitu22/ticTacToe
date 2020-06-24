@@ -1,114 +1,120 @@
 class TicTacToe {
   constructor(domCells, hitLines) {
-    this.player = '○';
     this.domCells = domCells;
     this.hitLines = hitLines;
-    this.winner = this.player;
+    this.player = '○';
+    this.winner = ;
     this._board = new Board(domCells);
-  }
+  };
   initialize(){
-    this.domCells.forEach(dom => {
-      dom.textContent = "";
-    });
+    this._board.clear();
     this.player = '○';
     information.changeMessage(`${this.player}の番です`);
     document.querySelector('button').disabled = true;
-  }
+  };
   put(dom) {
     this._board.put(dom, this.player);
-    this._changePlayer();
-  }
+  };
   isGameOver() {
     return this._gameOver();
-  }
+  };
   existWinner() {
     return this._isAnyHitLine();
-  }
+  };
   isDraw() {
     return this._board.isFill();
   };
   _gameOver() {
     return this.isDraw() || this._isAnyHitLine();
   };
-  _changePlayer() {
+  _changePlayer() {//=============changeiswhere
     this.player = this.player === '○'?'×':'○';
   };
   _isAnyHitLine() {
-    return this._board.isSame(this.domCells, this.player);
+    return this._board.isSame(this.hitLines, this.player);
   };
 }
+
 class Board {
   constructor(domCells) {
-        this.domCells = domCells;
-        this._cells = domCells.map(dom => { //Cellインスタンスの配列が出来てる
+        this._cells = domCells.map(dom => {
         return new Cell(dom);
       });
-  }
-  clear() {
-    this.domCells.clear();
   };
-  put(dom, mark) {
-    function isGetTargetCell(target, arr) {
-      return arr.find(e => {
-        return e._dom === target;
-      });
-    };
-    isGetTargetCell(dom, this._cells).putMark(mark);
+  clear() {
+    this._cells.forEach(e => {
+      e.clear();
+    });
+  };
+  put(dom, mark) { //=====================直しが必要orz
+    this._cells.forEach(e => {
+      if(e.isSameDom(dom)) {
+        e.putMark(mark);
+      };
+    });
+    // function isGetTargetCell(target, arr) {
+    //   return arr.find(e => {
+    //     return e._dom === target;
+    //   });
+    // };
+    // isGetTargetCell(dom, this._cells).putMark(mark);
+
   };
   isFill() {
-    return this._cells.map(e => {
+    return this._cells.every(e => {
       return e.isFill();
-    })
-  }
-  isSame(indexCells, mark) {
-    return  hitLines.some(line => {
-      return line.every(index => {
-        return indexCells[index].textContent === mark;
-      });
     });
-  }
+  };
+  isSame(index, mark) {
+    return index.some(numbers => {
+      return numbers.every(number => {
+        return this._cells[number].isSameMark(mark);
+      })
+    })
+  };
 }
+
 class Cell {
   constructor(dom) {
     this._dom = dom;
-  }
+  };
   clear() {
     this._dom.textContent = '';
-  }
+  };
   isSameDom(dom) {
     return dom === this._dom; 
   };
-  isFill() { //=========== check 
-    return this._dom !== '';
-  }
+  isFill() {
+    return this._dom.textContent !== '';
+  };
   isSameMark(mark) {
     return this._dom.textContent ===  mark;
-  }
+  };
   putMark(mark) {
     this._dom.textContent = mark;
-  }
+  };
 }
 
 class Information {
   constructor(dom) {
     this.dom = dom;
-  }
+  };
   changeMessage(message) {
     this.dom.textContent = message;
-  }
-}
+  };
+};
 
 class ContinueButton {
   constructor(dom) {
   this.btn = dom;
-  }
+  };
   activate() {
     this.btn.disabled = false;
-  }
+  };
   deactivate() {
     this.btn.disabled = true;
-  }
-}
+  };
+};
 
 const hitLines = [
   [0, 1, 2],
@@ -134,9 +140,9 @@ function initialize() {
 }
 // セルクリック
 function clickCell(e) {
-  // if (ticTacToe.isGameOver()) {
-  //   return;
-  // }
+  if (ticTacToe.isGameOver()) {
+    return;
+  }
 
   ticTacToe.put(e.target);
 
