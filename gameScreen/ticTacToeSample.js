@@ -47,20 +47,18 @@ class Board {
   clear() {
     this.domCells.clear();
   };
-  //============================================作業中======================
   put(dom, mark) {
-    this._cells.some(cell=> {
-      cell.putMark(mark);
-    });
-    this._cells.some(cell => {
-      cell.isSameDom(dom);
-    });
+    function isGetTargetCell(target, arr) {
+      return arr.find(e => {
+        return e._dom === target;
+      });
+    };
+    isGetTargetCell(dom, this._cells).putMark(mark);
   };
-  //===========================================================================
   isFill() {
-    return this._cells.every(cell => {
-      return cell.isFill();
-    });
+    return this._cells.map(e => {
+      return e.isFill();
+    })
   }
   isSame(indexCells, mark) {
     return  hitLines.some(line => {
@@ -80,7 +78,7 @@ class Cell {
   isSameDom(dom) {
     return dom === this._dom; 
   };
-  isFill() {
+  isFill() { //=========== check 
     return this._dom !== '';
   }
   isSameMark(mark) {
@@ -165,4 +163,4 @@ cells.forEach(function (cell) {
 });
 document.querySelector('button').onclick = submitContinueButton;
 
-console.log(ticTacToe._board._cells[0]);
+console.log(ticTacToe);
