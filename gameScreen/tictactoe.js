@@ -9,8 +9,6 @@ class TicTacToe {
   initialize(){
     this._board.clear();
     this.player = '○';
-    information.changeMessage(`${this.player}の番です`);
-    document.querySelector('button').disabled = true;
   };
   put(dom) {
       if(this._board.put(dom, this.player)) {
