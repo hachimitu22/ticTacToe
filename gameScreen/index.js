@@ -1,3 +1,5 @@
+(function () {
+
 const hitLines = [
   [0, 1, 2],
   [3, 4, 5],
@@ -52,3 +54,6 @@ cells.forEach(function (cell) {
 document.querySelector('button').onclick = submitContinueButton;
 
 console.log(ticTacToe);
+
+})();
+
