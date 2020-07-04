@@ -1,11 +1,13 @@
 class ContinueButton {
-  constructor(dom) {
-  this.btn = dom;
+  constructor() {
+    this.disabled = true;
   };
   activate() {
-    this.btn.disabled = false;
+    this.disabled = false;
+    return this.disabled;
   };
   deactivate() {
-    this.btn.disabled = true;
+     this.disabled = true;
+     return this.disabled;
   };
 };
