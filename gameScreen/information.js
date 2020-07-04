@@ -1,8 +1,9 @@
 class Information {
-  constructor(dom) {
-    this.dom = dom;
+  constructor() {
+    this.text = ''; 
   };
   changeMessage(message) {
-    this.dom.textContent = message;
+    this.text = message;
+    return this.text;
   };
 };

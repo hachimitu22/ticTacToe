@@ -1,37 +1,51 @@
 class TicTacToe {
-  constructor(domCells, hitLines) {
-    this.domCells = domCells;
+  constructor(idCells, hitLines) {
     this.hitLines = hitLines;
     this.player = '○';
-    this.winner;
-    this._board = new Board(domCells);
+    this.winner = '';
+    this._board = new Board(idCells);
   };
   initialize(){
     this._board.clear();
     this.player = '○';
+    this.winner = '';
   };
-  put(dom) {
-      if(this._board.put(dom, this.player)) {
+  put(id) {
+    if (this._board.put(id, this.player)) {
+      if (this._isAnyHitLine()) {
         this.winner = this.player;
+      } else {
         this._changePlayer();
-      };
+      }
+    };
   };
   isGameOver() {
     return this._gameOver();
   };
   existWinner() {
-    return this._isAnyHitLine();
-  };
+    if(this.winner !== '') {
+      return true;
+    } else if(this.winner === '') {
+      return false;
+    }
+  }
   isDraw() {
-    return this._board.isFill();
+    if(this._board.isFill() && this.winner === '') {
+      return true;
+    } else {
+      return false;
+    }
   };
   _gameOver() {
-    return this.isDraw() || this._isAnyHitLine();
+    return this.isDraw() || this.existWinner();
   };
   _changePlayer() {
     this.player = this.player === '○'?'×':'○';
   };
   _isAnyHitLine() {
-    return this._board.isSame(this.hitLines, this.winner);
+    return this._board.isSame(this.hitLines, this.player);
   };
+  getMark(id) {
+    return this._board.returnMark(id);
+  }
 }

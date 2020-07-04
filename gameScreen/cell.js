@@ -1,20 +1,24 @@
 class Cell {
-  constructor(dom) {
-    this._dom = dom;
+  constructor(id) {
+    this.id = id;
+    this.text = '';
   };
   clear() {
-    this._dom.textContent = '';
+    this.text = '';
   };
-  isSameDom(dom) {
-    return dom === this._dom; 
+  isSameId(id) {
+    return id === this.id;
   };
   isFill() {
-    return this._dom.textContent !== '';
+    return this.text !== '';
   };
   isSameMark(mark) {
-    return this._dom.textContent ===  mark;
+    return this.text ===  mark;
   };
   putMark(mark) {
-    this._dom.textContent = mark;
+    this.text = mark;
   };
+  returnMark() {
+      return this.text;
+  }
 }

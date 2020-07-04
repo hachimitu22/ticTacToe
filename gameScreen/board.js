@@ -1,7 +1,7 @@
 class Board {
-  constructor(domCells) {
-        this._cells = domCells.map(dom => {
-        return new Cell(dom);
+  constructor(idCells) {
+        this._cells = idCells.map(id => {
+        return new Cell(id);
       });
   };
   clear() {
@@ -9,14 +9,13 @@ class Board {
       e.clear();
     });
   };
-  put(dom, mark) {
-    function getTargetCell(dom, arr) {
+  put(id, mark) {
+    function getTargetCell(id, arr) {
       return arr.find(e => {
-        return e.isSameDom(dom);
+        return e.isSameId(id);
       });
     };
-
-    const getCell = getTargetCell(dom, this._cells);
+    const getCell = getTargetCell(id, this._cells);
     if(getCell.isFill()) {
       return false;
     } else {
@@ -36,4 +35,14 @@ class Board {
       })
     })
   };
+  returnMark(id) {
+    function getTargetCell(id, arr) {
+      return arr.find(e => {
+        return e.isSameId(id);
+      });
+    };
+    const getCell = getTargetCell(id, this._cells);
+    return getCell.returnMark();
+  }
+
 }
